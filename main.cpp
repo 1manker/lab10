@@ -1,9 +1,12 @@
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
 #include <string>
-#include "HashTables.cpp"//change to .h
-#include "GeneralHashFunctions.cpp"//change to .h
+#include "HashTables.h"//change to .h
+#include "GeneralHashFunctions.h"//change to .h
+
+
 
 //TODO
 // read in the two test files (names.txt, randoWords.txt) line by line
@@ -28,7 +31,96 @@
 
 
 using namespace std;
+
+HashTables read(string fileName);
+HashTables readWeak(string fileName);
+HashTables readPJW(string fileName);
+HashTables readELF(string fileName);
+
 int main(){
+  HashTables tableOne = read("names.txt");
+  HashTables tableTwo = read("randoWords.txt");
+  tableOne.CollisionReport();
+  tableTwo.CollisionReport();
+
+  HashTables tableThree = readWeak("names.txt");
+  HashTables tableFour = readWeak("randoWords.txt");
+  tableThree.CollisionReport();
+  tableFour.CollisionReport();
+
+  HashTables tableFive = readPJW("names.txt");
+  HashTables tableSix = readPJW("randoWords.txt");
+  tableFive.CollisionReport();
+  tableSix.CollisionReport();
+
+  HashTables tableSeven = readELF("names.txt");
+  HashTables tableEight = readELF("randoWords.txt");
+  tableSeven.CollisionReport();
+  tableEight.CollisionReport();
 
   return 0;
+}
+
+HashTables read(string fileName) {
+	ifstream in;
+	string line;
+	HashTables table;
+	in.open(fileName);
+	if (!in.is_open()) {
+		cout << "Bad file path" << endl;
+		return table;
+	}
+	while (getline(in, line)) {
+		table.addToTables(hash<string>{}(line), line);
+	}
+	in.close();
+	return table;
+}
+
+HashTables readWeak(string fileName) {
+	ifstream in;
+	string line;
+	HashTables table;
+	in.open(fileName);
+	if (!in.is_open()) {
+		cout << "Bad file path" << endl;
+		return table;
+	}
+	while (getline(in, line)) {
+		table.addToTables(WeakHash(line), line);
+	}
+	in.close();
+	return table;
+}
+
+HashTables readPJW(string fileName) {
+	ifstream in;
+	string line;
+	HashTables table;
+	in.open(fileName);
+	if (!in.is_open()) {
+		cout << "Bad file path" << endl;
+		return table;
+	}
+	while (getline(in, line)) {
+		table.addToTables(PJWHash(line), line);
+	}
+	in.close();
+	return table;
+}
+
+HashTables readELF(string fileName) {
+	ifstream in;
+	string line;
+	HashTables table;
+	in.open(fileName);
+	if (!in.is_open()) {
+		cout << "Bad file path" << endl;
+		return table;
+	}
+	while (getline(in, line)) {
+		table.addToTables(ELFHash(line), line);
+	}
+	in.close();
+	return table;
 }

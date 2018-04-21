@@ -5,7 +5,9 @@
 // - modified Node for typeof(entry_)==string
 
 #include "HashTables.h"
+
 typedef unsigned int unint;
+
 
 //function to simplify adding to HashTable
 // only need to call this from main
@@ -25,7 +27,19 @@ void HashTables::addToTables(unint inputHash, std::string text){
 // - and recurse to next spot
 // else add new openBucket to position
 void HashTables::addToOpenAddress(unint inputHash, std::string text){
-
+	if (openAddressTable.count(inputHash) == 1) {
+		openBucket temp = openAddressTable[inputHash];
+		temp.collision = true;
+		openAddressTable[inputHash] = temp;
+		openCollisions++;
+		addToOpenAddress(inputHash + 1, text);
+	}
+	else {
+		openBucket temp;
+		temp.collision = false;
+		temp.entry_ = text;
+		openAddressTable.insert({ inputHash, temp });
+	}
 }
 
 //TODO
@@ -36,14 +50,27 @@ void HashTables::addToOpenAddress(unint inputHash, std::string text){
 // - add to linked list
 // else add new chainBucket to position
 void HashTables::addToChaining(unint inputHash, std::string text){
-
+	if (chainingTable.count(inputHash) == 1) {
+		chainBucket temp = chainingTable[inputHash];
+		temp.collision = true;
+		temp.bucketList->insertAsLast(text);
+		chainingTable[inputHash] = temp;
+		chainedCollisions++;
+	}
+	else {
+		chainBucket temp;
+		temp.collision = false;
+		temp.bucketList = new List;
+		temp.bucketList->insertAsFirst(text);
+		chainingTable[inputHash] = temp;
+	}
 }
 
 // prints a collision report
 void HashTables::CollisionReport(){
   cout << "--------- Collision Report  ---------" << endl;
   cout << ">Open Addressing Table has   [" << openCollisions << "] collisions" << endl;
-  cout << ">Separate Chaining Table has [" << openCollisions << "] collisions" << endl;
+  cout << ">Separate Chaining Table has [" << chainedCollisions << "] collisions" << endl;
   cout << "-----------  End Report  ------------" << endl << endl;
 }
 

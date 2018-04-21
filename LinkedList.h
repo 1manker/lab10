@@ -19,7 +19,7 @@
 using std::ostream;
 using std::string;
 
-#include "Node.cpp"//change to .h
+#include "Node.h"//change to .h
 
 #define ulong unsigned long
 

@@ -20,9 +20,10 @@
 #define _NODE_H_
 
 #include <iostream>
+#include <string>
 using std::cout;
 using std::endl;
-
+using std::string;
 
 class Node
 {

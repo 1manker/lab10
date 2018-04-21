@@ -4,10 +4,9 @@
 // includes Dr. Tom Bailey's LinkedList & Node implementations
 // - modified Node for typeof(entry_)==string
 
-#include <unordered_map>
 #include <string>
-
-#include "LinkedList.cpp"//change to .h
+#include <unordered_map>
+#include "LinkedList.h"//change to .h
 
 typedef unsigned int unint;
 
@@ -29,8 +28,8 @@ private:
   std::unordered_map<unint,chainBucket> chainingTable;
 
 public:
-  unint openCollisions;//track number of collisions in open addressing
-  unint chainedCollisions;//track number of collisions in separate chaining
+  unint openCollisions = 0;//track number of collisions in open addressing
+  unint chainedCollisions = 0;//track number of collisions in separate chaining
 
   void addToTables(unint inputHash, std::string text);
   void addToOpenAddress(unint inputHash, std::string text);
